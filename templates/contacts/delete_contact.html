@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete Contact
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .delete-page {
+        max-width: 650px;
+        margin: 55px auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .delete-header {
+        background: linear-gradient(135deg, #0f172a, #164e63, #0891b2);
+        color: white;
+        padding: 28px;
+        border-radius: 18px 18px 0 0;
+        text-align: center;
+    }
+
+    .delete-header .icon {
+        font-size: 42px;
+        margin-bottom: 12px;
+    }
+
+    .delete-header h1 {
+        margin: 0 0 10px;
+        font-size: 25px;
+    }
+
+    .delete-header p {
+        margin: 0;
+        color: #e0f2fe;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .delete-card {
+        background: #ffffff;
+        padding: 32px;
+        border: 1px solid #e2e8f0;
+        border-top: none;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .warning-box {
+        padding: 17px;
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        border-radius: 12px;
+        color: #9f1239;
+        margin-bottom: 24px;
+        line-height: 1.7;
+        font-size: 14px;
+    }
+
+    .contact-name {
+        color: #0f172a;
+        font-size: 21px;
+        margin: 0 0 18px;
+        overflow-wrap: anywhere;
+    }
+
+    .contact-detail {
+        color: #475569;
+        font-size: 14px;
+        margin: 10px 0;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .contact-detail strong {
+        color: #0f172a;
+    }
+
+    .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+    }
+
+    .delete-button,
+    .cancel-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .delete-button {
+        background: linear-gradient(135deg, #dc2626, #991b1b);
+        color: #ffffff;
+        border: none;
+    }
+
+    .delete-button:hover {
+        background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(220, 38, 38, 0.2);
+    }
+
+    .cancel-button {
+        background: #e2e8f0;
+        color: #334155;
+    }
+
+    .cancel-button:hover {
+        background: #cbd5e1;
+        color: #0f172a;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 500px) {
+        .delete-page {
+            margin: 20px auto;
+            padding: 14px;
+        }
+
+        .delete-card {
+            padding: 23px;
+        }
+
+        .actions {
+            flex-direction: column;
+        }
+
+        .delete-button,
+        .cancel-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="delete-page">
+
+    <div class="delete-header">
+        <div class="icon">🗑️</div>
+
+        <h1>Delete Emergency Contact</h1>
+
+        <p>
+            Please review the contact details before confirming deletion.
+        </p>
+    </div>
+
+    <div class="delete-card">
+
+        <div class="warning-box">
+            ⚠️ <strong>Warning:</strong>
+            Are you sure you want to permanently delete this emergency contact?
+            This action may not be reversible.
+        </div>
+
+        <h2 class="contact-name">
+            {{ contact.name }}
+        </h2>
+
+        <p class="contact-detail">
+            <strong>Contact Type:</strong>
+            {{ contact.get_contact_type_display }}
+        </p>
+
+        <p class="contact-detail">
+            <strong>Email:</strong>
+            {{ contact.email }}
+        </p>
+
+        <p class="contact-detail">
+            <strong>Phone:</strong>
+            {{ contact.phone }}
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="actions">
+                <button
+                    type="submit"
+                    class="delete-button"
+                >
+                    🗑️ Yes, Delete Contact
+                </button>
+
+                <a
+                    href="{% url 'contacts_list' %}"
+                    class="cancel-button"
+                >
+                    ← Cancel
+                </a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

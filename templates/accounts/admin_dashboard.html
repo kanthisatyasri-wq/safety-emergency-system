@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .admin-dashboard {
+        padding: 10px 0 30px;
+        color: #0f172a;
+    }
+
+    /* Dashboard welcome section */
+    .dashboard-header {
+        position: relative;
+        overflow: hidden;
+        padding: 35px;
+        margin-bottom: 30px;
+        border-radius: 20px;
+        color: #ffffff;
+        background: linear-gradient(
+            125deg,
+            #0f172a 0%,
+            #164e63 55%,
+            #0891b2 100%
+        );
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+    }
+
+    .dashboard-header::after {
+        content: "";
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        right: -45px;
+        top: -85px;
+        border: 30px solid rgba(103, 232, 249, 0.12);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .dashboard-header h1 {
+        position: relative;
+        z-index: 1;
+        margin: 0 0 12px;
+        font-size: clamp(25px, 4vw, 34px);
+        font-weight: 750;
+        letter-spacing: -0.6px;
+    }
+
+    .dashboard-header p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: #cffafe;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .admin-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-top: 20px;
+        padding: 8px 14px;
+        border: 1px solid rgba(165, 243, 252, 0.35);
+        border-radius: 30px;
+        background: rgba(8, 145, 178, 0.25);
+        color: #ecfeff;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+    }
+
+    /* Section heading */
+    .dashboard-section-title {
+        margin: 0 0 8px;
+        color: #0f172a;
+        font-size: 23px;
+        font-weight: 750;
+    }
+
+    .dashboard-section-description {
+        margin: 0 0 24px;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    /* Dashboard cards */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+        align-items: stretch;
+    }
+
+    .cards .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 25px;
+        min-width: 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 17px;
+        background: linear-gradient(
+            160deg,
+            #ffffff 0%,
+            #f8fafc 100%
+        );
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+        transition:
+            transform 0.3s ease,
+            box-shadow 0.3s ease,
+            border-color 0.3s ease;
+    }
+
+    .cards .card:hover {
+        transform: translateY(-6px);
+        border-color: #67e8f9;
+        box-shadow: 0 16px 32px rgba(8, 145, 178, 0.13);
+    }
+
+    .card-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        margin-bottom: 22px;
+        border-radius: 16px;
+        background: linear-gradient(
+            135deg,
+            #0f172a,
+            #0891b2
+        );
+        color: #ffffff;
+        font-size: 27px;
+        box-shadow: 0 7px 16px rgba(8, 145, 178, 0.2);
+    }
+
+    .cards .card h3 {
+        margin: 0 0 12px;
+        color: #0f172a;
+        font-size: 19px;
+        font-weight: 750;
+    }
+
+    .cards .card p {
+        margin: 0 0 15px;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+    .card-status {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 7px;
+        margin-top: auto;
+        padding: 8px 11px;
+        border: 1px solid #a5f3fc;
+        border-radius: 8px;
+        background: #ecfeff;
+        color: #0e7490;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #06b6d4;
+    }
+
+    .dashboard-footer {
+        margin-top: 28px;
+        padding: 17px 20px;
+        border: 1px solid #cffafe;
+        border-radius: 12px;
+        background: linear-gradient(
+            110deg,
+            #ecfeff,
+            #f8fafc
+        );
+        color: #155e75;
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    /* Responsive layout */
+    @media (max-width: 950px) {
+        .cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 600px) {
+        .dashboard-header {
+            padding: 26px 22px;
+            border-radius: 16px;
+        }
+
+        .cards {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .cards .card {
+            padding: 22px;
+        }
+
+        .dashboard-section-title {
+            font-size: 21px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .cards .card {
+            transition: none;
+        }
+
+        .cards .card:hover {
+            transform: none;
+        }
+    }
+</style>
+
+<div class="admin-dashboard">
+
+    <!-- Welcome header -->
+    <div class="dashboard-header">
+
+        <h1>🛡️ Admin Dashboard</h1>
+
+        <p>
+            Welcome, {{ user.username }}.
+            You are logged in as an Administrator.
+        </p>
+
+        <span class="admin-badge">
+            🔐 ADMINISTRATOR ACCESS
+        </span>
+
+    </div>
+
+    <!-- Dashboard cards heading -->
+    <h2 class="dashboard-section-title">
+        System Overview
+    </h2>
+
+    <p class="dashboard-section-description">
+        Manage and monitor the key areas of your
+        Safety &amp; Emergency System.
+    </p>
+
+    <!-- Dashboard cards -->
+    <div class="cards">
+
+        <!-- Users card -->
+        <div class="card">
+
+            <div class="card-icon">👥</div>
+
+            <h3>Users</h3>
+
+            <p>
+                Manage registered users and oversee
+                user-related activities within the
+                Safety &amp; Emergency System.
+            </p>
+
+            <span class="card-status">
+                <span class="status-dot"></span>
+                Management coming later
+            </span>
+
+        </div>
+
+        <!-- Emergency incidents card -->
+        <div class="card">
+
+            <div class="card-icon">🚨</div>
+
+            <h3>Emergency Incidents</h3>
+
+            <p>
+                Monitor emergency alerts and accident
+                incidents to help support a faster
+                emergency response.
+            </p>
+
+            <span class="card-status">
+                <span class="status-dot"></span>
+                Coming Soon
+            </span>
+
+        </div>
+
+        <!-- Helpers card -->
+        <div class="card">
+
+            <div class="card-icon">🤝</div>
+
+            <h3>Emergency Helpers</h3>
+
+            <p>
+                Monitor nearby emergency helpers and
+                review helper-related activities
+                and requests.
+            </p>
+
+            <span class="card-status">
+                <span class="status-dot"></span>
+                Coming Soon
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- Footer information -->
+    <div class="dashboard-footer">
+        <strong>💡 Administrator Note:</strong>
+        User management, emergency monitoring, and
+        helper management features will be added
+        as the project develops.
+    </div>
+
+</div>
+
+{% endblock %}

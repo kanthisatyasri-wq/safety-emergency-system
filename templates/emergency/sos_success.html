@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+
+{% block title %}
+Emergency Status
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .emergency-status-page {
+        max-width: 750px;
+        margin: 35px auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .status-header {
+        padding: 35px 25px;
+        text-align: center;
+        color: #ffffff;
+        background: linear-gradient(
+            135deg,
+            #0f172a,
+            #164e63,
+            #0891b2
+        );
+        border-radius: 18px 18px 0 0;
+    }
+
+    .status-header-icon {
+        width: 78px;
+        height: 78px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        font-size: 38px;
+    }
+
+    .status-header h1 {
+        margin: 0 0 12px;
+        font-size: 28px;
+    }
+
+    .status-header p {
+        margin: 0;
+        color: #cffafe;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .status-content {
+        padding: 30px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-top: none;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+    }
+
+    .emergency-type-box {
+        margin-bottom: 24px;
+        padding: 20px;
+        background: #ecfeff;
+        border: 1px solid #a5f3fc;
+        border-radius: 13px;
+    }
+
+    .emergency-type-box span {
+        display: block;
+        margin-bottom: 8px;
+        color: #155e75;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+    }
+
+    .emergency-type-box h2 {
+        margin: 0;
+        color: #0f172a;
+        font-size: 22px;
+        overflow-wrap: anywhere;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 15px 0;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .detail-label {
+        flex-shrink: 0;
+        color: #475569;
+        font-weight: 700;
+    }
+
+    .detail-value {
+        color: #0f172a;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 7px 12px;
+        color: #92400e;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .location-button,
+    .action-button {
+        display: block;
+        width: 100%;
+        padding: 15px 18px;
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .location-button {
+        margin-top: 22px;
+        color: #155e75;
+        background: #ecfeff;
+        border: 1px solid #a5f3fc;
+    }
+
+    .location-button:hover {
+        color: #ffffff;
+        background: #0891b2;
+    }
+
+    .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(8, 145, 178, 0.2);
+    }
+
+    .resolve-button {
+        color: #ffffff;
+        background: linear-gradient(135deg, #0891b2, #164e63);
+    }
+
+    .dashboard-button {
+        margin-top: 14px;
+        color: #164e63;
+        background: #ffffff;
+        border: 1px solid #a5f3fc;
+    }
+
+    .status-message {
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: 11px;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .active-message {
+        color: #92400e;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+    }
+
+    .resolved-message {
+        color: #065f46;
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+    }
+
+    .action-section {
+        margin-top: 24px;
+    }
+
+    .action-section form {
+        margin: 0;
+    }
+
+    .safety-note {
+        margin-top: 22px;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.7;
+        text-align: center;
+    }
+
+    .action-button:focus-visible,
+    .location-button:focus-visible {
+        outline: 3px solid #67e8f9;
+        outline-offset: 3px;
+    }
+
+    @media (max-width: 500px) {
+        .emergency-status-page {
+            margin: 20px auto;
+            padding: 14px;
+        }
+
+        .status-header {
+            padding: 28px 18px;
+        }
+
+        .status-header h1 {
+            font-size: 24px;
+        }
+
+        .status-content {
+            padding: 22px 18px;
+        }
+
+        .detail-row {
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-value {
+            text-align: left;
+        }
+    }
+</style>
+
+<div class="emergency-status-page">
+
+    <div class="status-header">
+        <div class="status-header-icon">🚨</div>
+
+        <h1>Emergency Details</h1>
+
+        <p>
+            Review your emergency information, check its current status,
+            and view the recorded location.
+        </p>
+    </div>
+
+    <div class="status-content">
+
+        <div class="emergency-type-box">
+            <span>Emergency Type</span>
+
+            <h2>
+                {{ emergency.get_emergency_type_display }}
+            </h2>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">Current Status</span>
+
+            <span class="detail-value">
+                <span class="status-badge">
+                    {{ emergency.get_status_display }}
+                </span>
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">Latitude</span>
+
+            <span class="detail-value">
+                {{ emergency.latitude|default:"Not available" }}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">Longitude</span>
+
+            <span class="detail-value">
+                {{ emergency.longitude|default:"Not available" }}
+            </span>
+        </div>
+
+        {% if emergency.latitude and emergency.longitude %}
+            <a
+                href="https://www.google.com/maps?q={{ emergency.latitude }},{{ emergency.longitude }}"
+                class="location-button"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                📍 View Emergency Location
+            </a>
+        {% endif %}
+
+        {% if emergency.status == 'ACTIVE' %}
+
+            <div class="status-message active-message">
+                ⚠️ <strong>Your emergency is still active.</strong>
+                If assistance is still needed, follow the appropriate
+                emergency procedures.
+            </div>
+
+            <div class="action-section">
+                <form
+                    method="post"
+                    action="{% url 'resolve_emergency' emergency.id %}"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="action-button resolve-button"
+                    >
+                        ✓ Mark Emergency as Resolved
+                    </button>
+                </form>
+            </div>
+
+        {% else %}
+
+            <div class="status-message resolved-message">
+                ✅ <strong>This emergency has been resolved.</strong>
+                You do not need to mark it as resolved again.
+            </div>
+
+        {% endif %}
+
+        <a
+            href="{% url 'user_dashboard' %}"
+            class="action-button dashboard-button"
+        >
+            ← Back to Dashboard
+        </a>
+
+        <p class="safety-note">
+            Safety & Emergency System · Stay safe and keep your
+            emergency information up to date.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

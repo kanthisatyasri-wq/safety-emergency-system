@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}
+Emergency Statistics
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .statistics-page {
+        max-width: 1100px;
+        margin: 35px auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .statistics-hero {
+        padding: 38px 25px;
+        margin-bottom: 30px;
+        text-align: center;
+        color: #ffffff;
+        background: linear-gradient(
+            135deg,
+            #0f172a,
+            #164e63,
+            #0891b2
+        );
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(8, 145, 178, 0.15);
+    }
+
+    .hero-icon {
+        margin-bottom: 12px;
+        font-size: 44px;
+    }
+
+    .statistics-hero h1 {
+        margin: 0 0 12px;
+        font-size: 30px;
+    }
+
+    .statistics-hero p {
+        margin: 0;
+        color: #cffafe;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .statistics-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        position: relative;
+        padding: 25px 20px;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        box-shadow: 0 7px 22px rgba(15, 23, 42, 0.06);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #164e63, #06b6d4);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(8, 145, 178, 0.12);
+    }
+
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+        background: #ecfeff;
+        border: 1px solid #a5f3fc;
+        border-radius: 13px;
+        font-size: 26px;
+    }
+
+    .stat-card h3 {
+        margin: 0 0 14px;
+        color: #475569;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .stat-value {
+        margin: 0;
+        color: #0f172a;
+        font-size: 34px;
+        font-weight: 800;
+        overflow-wrap: anywhere;
+    }
+
+    .stat-description {
+        margin-top: 10px;
+        color: #94a3b8;
+        font-size: 12px;
+    }
+
+    .stat-active::before {
+        background: #f59e0b;
+    }
+
+    .stat-resolved::before {
+        background: #10b981;
+    }
+
+    .stat-sos::before {
+        background: #ef4444;
+    }
+
+    .stat-accident::before {
+        background: #f97316;
+    }
+
+    .statistics-actions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .statistics-button {
+        display: inline-block;
+        padding: 14px 22px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #0891b2, #164e63);
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .statistics-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(8, 145, 178, 0.22);
+    }
+
+    .statistics-button.secondary {
+        color: #164e63;
+        background: #ffffff;
+        border: 1px solid #a5f3fc;
+    }
+
+    .statistics-button:focus-visible {
+        outline: 3px solid #67e8f9;
+        outline-offset: 3px;
+    }
+
+    @media (max-width: 800px) {
+        .statistics-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 500px) {
+        .statistics-page {
+            margin: 20px auto;
+            padding: 14px;
+        }
+
+        .statistics-hero {
+            padding: 30px 18px;
+        }
+
+        .statistics-hero h1 {
+            font-size: 25px;
+        }
+
+        .statistics-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .stat-card {
+            padding: 22px;
+        }
+
+        .statistics-actions {
+            flex-direction: column;
+        }
+
+        .statistics-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="statistics-page">
+
+    <div class="statistics-hero">
+        <div class="hero-icon">📊</div>
+
+        <h1>Emergency Statistics</h1>
+
+        <p>
+            Get an overview of your emergency reports,
+            current incidents, and resolved emergencies.
+        </p>
+    </div>
+
+    <div class="statistics-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon">📋</div>
+
+            <h3>Total Emergencies</h3>
+
+            <h2 class="stat-value">{{ stats.total }}</h2>
+
+            <p class="stat-description">
+                All recorded emergency reports
+            </p>
+        </div>
+
+        <div class="stat-card stat-active">
+            <div class="stat-icon">🚨</div>
+
+            <h3>Active Emergencies</h3>
+
+            <h2 class="stat-value">{{ stats.active }}</h2>
+
+            <p class="stat-description">
+                Emergencies marked as active
+            </p>
+        </div>
+
+        <div class="stat-card stat-resolved">
+            <div class="stat-icon">✅</div>
+
+            <h3>Resolved Emergencies</h3>
+
+            <h2 class="stat-value">{{ stats.resolved }}</h2>
+
+            <p class="stat-description">
+                Emergencies marked as resolved
+            </p>
+        </div>
+
+        <div class="stat-card stat-sos">
+            <div class="stat-icon">🆘</div>
+
+            <h3>SOS Reports</h3>
+
+            <h2 class="stat-value">{{ stats.sos }}</h2>
+
+            <p class="stat-description">
+                Recorded SOS reports
+            </p>
+        </div>
+
+        <div class="stat-card stat-accident">
+            <div class="stat-icon">🚑</div>
+
+            <h3>Accident Reports</h3>
+
+            <h2 class="stat-value">{{ stats.accident }}</h2>
+
+            <p class="stat-description">
+                Recorded accident reports
+            </p>
+        </div>
+
+    </div>
+
+    <div class="statistics-actions">
+
+        <a
+            href="{% url 'emergency_history' %}"
+            class="statistics-button"
+        >
+            📋 View Emergency History
+        </a>
+
+        <a
+            href="{% url 'role_dashboard' %}"
+            class="statistics-button secondary"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

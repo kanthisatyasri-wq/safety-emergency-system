@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Safety System - Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #164e63 50%,
+                #0891b2 100%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Decorative background circles */
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(34, 211, 238, 0.12);
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        body::before {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -90px;
+        }
+
+        body::after {
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            right: -100px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 420px;
+            max-width: 100%;
+            padding: 40px 35px;
+            background: rgba(255, 255, 255, 0.97);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 22px;
+            box-shadow: 0 25px 60px rgba(2, 12, 27, 0.35);
+            animation: appear 0.65s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            border-radius: 22px;
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #0891b2,
+                #22d3ee
+            );
+            box-shadow: 0 8px 22px rgba(8, 145, 178, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 27px;
+            letter-spacing: -0.6px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #164e63;
+            font-size: 21px;
+            margin-bottom: 25px;
+        }
+
+        .message {
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            border-radius: 9px;
+            background: #ecfeff;
+            border: 1px solid #a5f3fc;
+            color: #155e75;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        label {
+            display: block;
+            margin: 17px 0 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #0f172a;
+            font-size: 15px;
+            transition: border-color 0.25s,
+                        box-shadow 0.25s,
+                        background 0.25s;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.14);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 26px;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(
+                120deg,
+                #0f172a,
+                #164e63,
+                #0891b2
+            );
+            background-size: 200% auto;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(8, 145, 178, 0.25);
+            transition: background-position 0.35s,
+                        transform 0.25s,
+                        box-shadow 0.25s;
+        }
+
+        button:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(8, 145, 178, 0.35);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .signup-link a {
+            display: inline-block;
+            margin-left: 4px;
+            color: #0891b2;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .signup-link a:hover {
+            color: #0f172a;
+            text-decoration: underline;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 22px;
+            color: #94a3b8;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 32px 23px;
+                border-radius: 18px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .logo {
+                width: 68px;
+                height: 68px;
+                font-size: 34px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">🛡️</div>
+
+        <h1>Safety System</h1>
+
+        <p class="subtitle">
+            Your safety matters. Your security comes first.
+        </p>
+
+        <h2 class="section-title">Welcome Back</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="username">Username</label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit">
+                Login Securely →
+            </button>
+        </form>
+
+        <div class="signup-link">
+            Don't have an account?
+            <a href="{% url 'signup' %}">Create Account</a>
+        </div>
+
+        <div class="footer-note">
+            YOUR SECURITY • YOUR PEACE OF MIND
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report an Accident | Safety & Emergency System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 25px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #164e63,
+                #0891b2
+            );
+        }
+
+        .accident-container {
+            width: 100%;
+            max-width: 650px;
+            overflow: hidden;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .accident-header {
+            padding: 35px 25px;
+            text-align: center;
+            color: #ffffff;
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #164e63,
+                #0891b2
+            );
+        }
+
+        .accident-icon {
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            font-size: 38px;
+        }
+
+        .accident-header h1 {
+            margin: 0 0 12px;
+            font-size: 28px;
+        }
+
+        .accident-header p {
+            margin: 0;
+            color: #cffafe;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .accident-content {
+            padding: 30px;
+        }
+
+        .info-box {
+            margin-bottom: 24px;
+            padding: 16px;
+            color: #155e75;
+            background: #ecfeff;
+            border: 1px solid #a5f3fc;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .location-card {
+            margin-bottom: 25px;
+            padding: 22px;
+            text-align: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+        }
+
+        .location-icon {
+            margin-bottom: 12px;
+            font-size: 35px;
+        }
+
+        .location-card h2 {
+            margin: 0 0 12px;
+            color: #0f172a;
+            font-size: 19px;
+        }
+
+        #locationStatus {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        #locationStatus.success {
+            color: #047857;
+            font-weight: 700;
+        }
+
+        #locationStatus.error {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        #locationStatus.loading {
+            color: #0369a1;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 11px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0891b2, #164e63);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(8, 145, 178, 0.25);
+        }
+
+        .button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .button:focus-visible {
+            outline: 3px solid #67e8f9;
+            outline-offset: 3px;
+        }
+
+        .privacy-note {
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            .accident-header {
+                padding: 28px 18px;
+            }
+
+            .accident-header h1 {
+                font-size: 24px;
+            }
+
+            .accident-content {
+                padding: 22px 18px;
+            }
+
+            .location-card {
+                padding: 18px 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="accident-container">
+
+        <header class="accident-header">
+            <div class="accident-icon">🚨</div>
+
+            <h1>Report an Accident</h1>
+
+            <p>
+                Help us identify the accident location so assistance
+                can be directed to the right place.
+            </p>
+        </header>
+
+        <section class="accident-content">
+
+            <div class="info-box">
+                📍 <strong>Location access required</strong><br>
+                Allow your browser to access your location.
+                Your report can be submitted after your coordinates
+                have been captured.
+            </div>
+
+            <form
+    method="post"
+    id="accidentForm"
+    enctype="multipart/form-data"
+>
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="latitude"
+                    id="latitude"
+                >
+
+                <input
+                    type="hidden"
+                    name="longitude"
+                    id="longitude"
+                >
+
+                <div class="location-card">
+                    <div class="location-icon">🛰️</div>
+
+                    <h2>Detecting Your Location</h2>
+
+                    <p
+                        id="locationStatus"
+                        class="loading"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        Getting your location...
+                    </p>
+                </div>
+
+                <button
+                    type="submit"
+                    id="submitButton"
+                    class="button"
+                    disabled
+                >
+                    🚨 Report Accident
+                </button>
+            </form>
+
+            <p class="privacy-note">
+                🔒 Location access depends on your browser permission.
+                Your coordinates are submitted with this form.
+            </p>
+
+        </section>
+
+    </main>
+
+    <script>
+        const statusText = document.getElementById("locationStatus");
+        const submitButton = document.getElementById("submitButton");
+        const latitudeInput = document.getElementById("latitude");
+        const longitudeInput = document.getElementById("longitude");
+
+        function showLocationStatus(message, type) {
+            statusText.textContent = message;
+            statusText.className = type;
+        }
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    latitudeInput.value = position.coords.latitude;
+                    longitudeInput.value = position.coords.longitude;
+
+                    showLocationStatus(
+                        "✓ Your location has been captured successfully.",
+                        "success"
+                    );
+
+                    submitButton.disabled = false;
+                },
+                function (error) {
+                    let message =
+                        "Could not get your location. Allow location permission and try again.";
+
+                    if (error.code === error.PERMISSION_DENIED) {
+                        message =
+                            "Location permission was denied. Enable location access in your browser settings and reload this page.";
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        message =
+                            "Your location is currently unavailable. Check your device location settings and try again.";
+                    } else if (error.code === error.TIMEOUT) {
+                        message =
+                            "Location detection timed out. Please try again.";
+                    }
+
+                    showLocationStatus(message, "error");
+                    submitButton.disabled = true;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        } else {
+            showLocationStatus(
+                "Geolocation is not supported by this browser.",
+                "error"
+            );
+
+            submitButton.disabled = true;
+        }
+
+        document.getElementById("accidentForm").addEventListener(
+            "submit",
+            function (event) {
+                if (!latitudeInput.value || !longitudeInput.value) {
+                    event.preventDefault();
+
+                    showLocationStatus(
+                        "Your location has not been captured. Please try again.",
+                        "error"
+                    );
+
+                    submitButton.disabled = true;
+                }
+            }
+        );
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+{% extends "base.html" %}
+
+{% block title %}
+SOS Emergency
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .sos-page {
+        max-width: 700px;
+        margin: 35px auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .sos-header {
+        padding: 35px 25px;
+        text-align: center;
+        color: #ffffff;
+        background: linear-gradient(
+            135deg,
+            #0f172a,
+            #164e63,
+            #0891b2
+        );
+        border-radius: 18px 18px 0 0;
+    }
+
+    .sos-icon {
+        width: 82px;
+        height: 82px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        font-size: 42px;
+    }
+
+    .sos-header h1 {
+        margin: 0 0 12px;
+        font-size: 29px;
+    }
+
+    .sos-header p {
+        margin: 0;
+        color: #cffafe;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .sos-card {
+        padding: 30px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-top: none;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+    }
+
+    .warning-box {
+        margin-bottom: 24px;
+        padding: 15px;
+        color: #92400e;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-radius: 12px;
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .location-panel {
+        padding: 22px;
+        margin-bottom: 24px;
+        text-align: center;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+    }
+
+    .location-icon {
+        margin-bottom: 12px;
+        font-size: 34px;
+    }
+
+    .location-panel h2 {
+        margin: 0 0 12px;
+        color: #0f172a;
+        font-size: 19px;
+    }
+
+    #locationStatus {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+    #locationStatus.success {
+        color: #047857;
+        font-weight: 700;
+    }
+
+    #locationStatus.error {
+        color: #b91c1c;
+        font-weight: 600;
+    }
+
+    #locationStatus.loading {
+        color: #0369a1;
+    }
+
+    .sos-button {
+        display: block;
+        width: 100%;
+        padding: 17px 20px;
+        border: none;
+        border-radius: 12px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #dc2626, #991b1b);
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .sos-button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(220, 38, 38, 0.25);
+    }
+
+    .sos-button:disabled {
+        background: #94a3b8;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+
+    .location-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 18px;
+        padding: 14px 18px;
+        border: 1px solid #a5f3fc;
+        border-radius: 11px;
+        color: #155e75;
+        background: #ecfeff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .location-button:hover:not(:disabled) {
+        color: #ffffff;
+        background: #0891b2;
+    }
+
+    .location-button:disabled {
+        opacity: 0.65;
+        cursor: wait;
+    }
+
+    .sos-button:focus-visible,
+    .location-button:focus-visible {
+        outline: 3px solid #67e8f9;
+        outline-offset: 3px;
+    }
+
+    .privacy-note {
+        margin: 20px 0 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.7;
+        text-align: center;
+    }
+
+    @media (max-width: 500px) {
+        .sos-page {
+            margin: 20px auto;
+            padding: 14px;
+        }
+
+        .sos-header {
+            padding: 28px 18px;
+        }
+
+        .sos-header h1 {
+            font-size: 25px;
+        }
+
+        .sos-card {
+            padding: 22px 18px;
+        }
+
+        .location-panel {
+            padding: 18px 14px;
+        }
+    }
+</style>
+
+<div class="sos-page">
+
+    <div class="sos-header">
+        <div class="sos-icon">🆘</div>
+
+        <h1>Emergency SOS</h1>
+
+        <p>
+            Need urgent assistance? Capture your current location
+            and send an emergency alert to your verified contacts.
+        </p>
+    </div>
+
+    <div class="sos-card">
+
+        <div class="warning-box">
+            ⚠️ <strong>Important:</strong>
+            Use this feature for genuine emergencies.
+            Allow location access so your report can include
+            your coordinates.
+        </div>
+
+        <form method="POST" id="sosForm">
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="latitude"
+                id="latitude"
+            >
+
+            <input
+                type="hidden"
+                name="longitude"
+                id="longitude"
+            >
+
+            <div class="location-panel">
+                <div class="location-icon">📍</div>
+
+                <h2>Your Current Location</h2>
+
+                <p
+                    id="locationStatus"
+                    class="loading"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Location not captured yet.
+                    Select the button below to begin.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="locationButton"
+                onclick="getLocation()"
+                class="location-button"
+            >
+                📍 Get Current Location
+            </button>
+
+            <button
+                type="submit"
+                id="sosButton"
+                class="sos-button"
+                disabled
+            >
+                🚨 SEND SOS ALERT
+            </button>
+        </form>
+
+        <p class="privacy-note">
+            🔒 Your location is submitted with this form.
+            SOS notifications depend on your system's backend
+            notification workflow.
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+    const statusText = document.getElementById("locationStatus");
+    const sosButton = document.getElementById("sosButton");
+    const locationButton = document.getElementById("locationButton");
+    const latitudeInput = document.getElementById("latitude");
+    const longitudeInput = document.getElementById("longitude");
+    const sosForm = document.getElementById("sosForm");
+
+    let locationRequestInProgress = false;
+
+    function showLocationStatus(message, type) {
+        statusText.textContent = message;
+        statusText.className = type;
+    }
+
+    function getLocation() {
+        if (locationRequestInProgress) {
+            return;
+        }
+
+        if (!navigator.geolocation) {
+            showLocationStatus(
+                "Your browser does not support location detection.",
+                "error"
+            );
+            return;
+        }
+
+        locationRequestInProgress = true;
+        locationButton.disabled = true;
+        sosButton.disabled = true;
+
+        latitudeInput.value = "";
+        longitudeInput.value = "";
+
+        showLocationStatus(
+            "Getting your current location. Please wait...",
+            "loading"
+        );
+
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                latitudeInput.value = position.coords.latitude;
+                longitudeInput.value = position.coords.longitude;
+
+                showLocationStatus(
+                    "✓ Location captured successfully. You can now send your SOS alert.",
+                    "success"
+                );
+
+                sosButton.disabled = false;
+                locationButton.disabled = false;
+                locationRequestInProgress = false;
+            },
+
+            function(error) {
+                let message =
+                    "Unable to get your location. Allow location permission and try again.";
+
+                if (error.code === error.PERMISSION_DENIED) {
+                    message =
+                        "Location permission was denied. Enable location access in your browser settings and try again.";
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    message =
+                        "Your current location is unavailable. Check your device location settings and retry.";
+                } else if (error.code === error.TIMEOUT) {
+                    message =
+                        "Location detection timed out. Please try again.";
+                }
+
+                showLocationStatus(message, "error");
+
+                sosButton.disabled = true;
+                locationButton.disabled = false;
+                locationRequestInProgress = false;
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
+            }
+        );
+    }
+
+    sosForm.addEventListener("submit", function(event) {
+        if (
+            !latitudeInput.value ||
+            !longitudeInput.value ||
+            locationRequestInProgress
+        ) {
+            event.preventDefault();
+
+            showLocationStatus(
+                "Please capture your location before sending the SOS alert.",
+                "error"
+            );
+
+            sosButton.disabled = true;
+        }
+    });
+</script>
+
+{% endblock %}

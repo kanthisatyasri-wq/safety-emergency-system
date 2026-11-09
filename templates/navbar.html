@@ -1,0 +1,345 @@
+<style>
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #0f172a, #164e63, #0891b2);
+        color: #ffffff;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.15);
+        position: relative;
+        z-index: 1000;
+    }
+
+    .nav-left,
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .nav-left {
+        flex-wrap: wrap;
+    }
+
+    .navbar a {
+        color: #e0f2fe;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 12px;
+        border-radius: 8px;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .navbar a:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.13);
+    }
+
+    .navbar a:focus-visible,
+    .account-button:focus-visible {
+        outline: 2px solid #a5f3fc;
+        outline-offset: 3px;
+    }
+
+    .navbar .brand {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 800;
+        white-space: nowrap;
+        margin-right: 10px;
+        padding-left: 0;
+    }
+
+    .navbar .brand:hover {
+        background: transparent;
+        color: #cffafe;
+    }
+
+    .nav-right {
+        flex-shrink: 0;
+    }
+
+    .signup-button {
+        background: #ffffff;
+        color: #164e63 !important;
+        padding: 10px 18px !important;
+        border-radius: 9px;
+        font-weight: 800 !important;
+    }
+
+    .signup-button:hover {
+        background: #cffafe !important;
+        color: #0f172a !important;
+    }
+
+    .dropdown {
+        position: relative;
+    }
+
+    .account-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .account-button:hover,
+    .dropdown.open .account-button {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        min-width: 210px;
+        padding: 8px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
+        z-index: 1001;
+    }
+
+    .dropdown.open .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu .account-name {
+        padding: 12px;
+        margin-bottom: 5px;
+        color: #164e63;
+        font-size: 14px;
+        font-weight: 800;
+        overflow-wrap: anywhere;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 11px 12px;
+        color: #334155;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+    .dropdown-menu a:hover {
+        color: #155e75;
+        background: #ecfeff;
+    }
+
+    .navbar-toggle {
+        display: none;
+        padding: 9px 12px;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 8px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+        .navbar {
+            flex-wrap: wrap;
+            padding: 14px 18px;
+        }
+
+        .navbar-toggle {
+            display: inline-block;
+            margin-left: auto;
+        }
+
+        .nav-left,
+        .nav-right {
+            display: none;
+            width: 100%;
+            align-items: stretch;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .navbar.mobile-open .nav-left,
+        .navbar.mobile-open .nav-right {
+            display: flex;
+        }
+
+        .nav-left {
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-left a,
+        .nav-right > a {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .navbar .brand {
+            margin-right: 0;
+            white-space: normal;
+        }
+
+        .dropdown {
+            width: 100%;
+        }
+
+        .account-button {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .dropdown-menu {
+            position: static;
+            width: auto;
+            margin-top: 8px;
+            box-shadow: none;
+        }
+
+        .signup-button {
+            text-align: center;
+        }
+    }
+</style>
+
+<nav class="navbar" id="mainNavbar">
+
+    <a href="{% url 'home' %}" class="brand">
+        🛡 Safety & Emergency
+    </a>
+
+    <button
+        type="button"
+        class="navbar-toggle"
+        id="navbarToggle"
+        aria-label="Toggle navigation"
+        aria-controls="navbarLinks"
+        aria-expanded="false"
+    >
+        ☰
+    </button>
+
+    <div class="nav-left" id="navbarLinks">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'role_dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'emergency_history' %}">
+                Emergency History
+            </a>
+
+            <a href="{% url 'emergency_statistics' %}">
+                Emergency Statistics
+            </a>
+
+        {% endif %}
+
+    </div>
+
+    <div class="nav-right">
+
+        {% if user.is_authenticated %}
+
+            <div class="dropdown" id="accountDropdown">
+
+                <button
+                    type="button"
+                    class="account-button"
+                    id="accountButton"
+                    aria-expanded="false"
+                    aria-controls="accountMenu"
+                >
+                    👤 Account ▾
+                </button>
+
+                <div class="dropdown-menu" id="accountMenu">
+
+                    <div class="account-name">
+                        {{ user.username }}
+                    </div>
+
+                    <a href="{% url 'profile' %}">
+                        👤 Profile
+                    </a>
+
+                    <a href="{% url 'logout' %}">
+                        🚪 Logout
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="{% url 'signup' %}" class="signup-button">
+                Create Account
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.getElementById("mainNavbar");
+        const toggleButton = document.getElementById("navbarToggle");
+        const dropdown = document.getElementById("accountDropdown");
+        const accountButton = document.getElementById("accountButton");
+
+        if (toggleButton) {
+            toggleButton.addEventListener("click", function () {
+                const isOpen = navbar.classList.toggle("mobile-open");
+                toggleButton.setAttribute("aria-expanded", String(isOpen));
+                toggleButton.textContent = isOpen ? "✕" : "☰";
+            });
+        }
+
+        if (dropdown && accountButton) {
+            accountButton.addEventListener("click", function () {
+                const isOpen = dropdown.classList.toggle("open");
+                accountButton.setAttribute("aria-expanded", String(isOpen));
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.remove("open");
+                    accountButton.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    dropdown.classList.remove("open");
+                    accountButton.setAttribute("aria-expanded", "false");
+                    accountButton.focus();
+                }
+            });
+        }
+    });
+</script>

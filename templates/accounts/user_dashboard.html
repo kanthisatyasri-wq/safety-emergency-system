@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}
+User Dashboard
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 35px auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Dashboard Header */
+    .dashboard-header {
+        background: linear-gradient(135deg, #0f172a, #164e63, #0891b2);
+        color: white;
+        padding: 38px 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 25px rgba(8, 145, 178, 0.2);
+    }
+
+    .dashboard-header h1 {
+        font-size: 30px;
+        margin: 0 0 12px;
+        font-weight: 700;
+    }
+
+    .dashboard-header p {
+        margin: 0;
+        font-size: 16px;
+        color: #e0f2fe;
+        line-height: 1.6;
+    }
+
+    .dashboard-label {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* Cards Layout */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+        transition: transform 0.25s ease,
+                    box-shadow 0.25s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px rgba(8, 145, 178, 0.13);
+        border-color: #a5f3fc;
+    }
+
+    .card h2,
+    .card h3 {
+        color: #0f172a;
+        margin: 0 0 14px;
+        font-size: 21px;
+    }
+
+    .card p {
+        color: #475569;
+        font-size: 15px;
+        line-height: 1.7;
+        margin: 0 0 22px;
+        flex-grow: 1;
+    }
+
+    /* Buttons */
+    .card-button,
+    .hero-button {
+        display: inline-block;
+        text-decoration: none;
+        color: #ffffff;
+        background: linear-gradient(135deg, #0891b2, #0e7490);
+        padding: 12px 19px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+        text-align: center;
+    }
+
+    .card-button:hover,
+    .hero-button:hover {
+        background: linear-gradient(135deg, #0e7490, #155e75);
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(8, 145, 178, 0.2);
+    }
+
+    /* SOS Card */
+    .sos-card {
+        border: 1px solid #fecaca;
+        background: linear-gradient(145deg, #ffffff, #fff7f7);
+    }
+
+    .sos-card h2 {
+        color: #991b1b;
+    }
+
+    .sos-card .hero-button {
+        background: linear-gradient(135deg, #dc2626, #991b1b);
+    }
+
+    .sos-card .hero-button:hover {
+        background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+    }
+
+    /* Accident Card */
+    .accident-card {
+        border: 1px solid #fed7aa;
+        background: linear-gradient(145deg, #ffffff, #fffaf5);
+    }
+
+    .accident-card .card-button {
+        background: linear-gradient(135deg, #f97316, #c2410c);
+    }
+
+    .accident-card .card-button:hover {
+        background: linear-gradient(135deg, #ea580c, #9a3412);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 700px) {
+        .dashboard-container {
+            margin: 15px auto;
+            padding: 14px;
+        }
+
+        .dashboard-header {
+            padding: 28px 22px;
+            border-radius: 15px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 24px;
+        }
+
+        .cards {
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        .card {
+            padding: 23px;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+        <span class="dashboard-label">Safety & Emergency System</span>
+
+        <h1>Welcome, {{ user.username }} 👋</h1>
+
+        <p>
+            This is your personal Safety & Emergency dashboard.
+            Manage your contacts and access emergency services whenever needed.
+        </p>
+    </div>
+
+    <div class="cards">
+
+        <!-- Profile Card -->
+        <div class="card">
+            <h3>👤 My Profile</h3>
+
+            <p>
+                View and manage your account information
+                and personal details.
+            </p>
+
+            <a href="{% url 'profile' %}" class="card-button">
+                View Profile →
+            </a>
+        </div>
+
+        <!-- Emergency Contacts Card -->
+        <div class="card">
+            <h3>📞 Emergency Contacts</h3>
+
+            <p>
+                Add and manage the trusted people who should
+                be contacted during an emergency.
+            </p>
+
+            <a href="{% url 'contacts_list' %}" class="card-button">
+                Manage Contacts →
+            </a>
+        </div>
+
+        <!-- SOS Card -->
+        <div class="card sos-card">
+            <h2>🚨 Emergency SOS</h2>
+
+            <p>
+                In case of an emergency, use SOS to alert
+                your verified emergency contacts.
+            </p>
+
+            <a href="{% url 'sos' %}" class="hero-button">
+                🚨 SOS Emergency
+            </a>
+        </div>
+
+        <!-- Accident Report Card -->
+        <div class="card accident-card">
+            <h3>🚗 Report Accident</h3>
+
+            <p>
+                Report an accident and request emergency
+                assistance when it is needed.
+            </p>
+
+            <a href="{% url 'accident_report' %}" class="card-button">
+                🚑 Report Accident
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

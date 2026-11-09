@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Profile
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .profile-page {
+        padding: 10px 0 30px;
+        color: #0f172a;
+    }
+
+    /* Gradient profile header */
+    .dashboard-header {
+        position: relative;
+        overflow: hidden;
+        padding: 32px;
+        margin-bottom: 28px;
+        border-radius: 20px;
+        color: #ffffff;
+        background: linear-gradient(
+            125deg,
+            #0f172a 0%,
+            #164e63 55%,
+            #0891b2 100%
+        );
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+    }
+
+    .dashboard-header::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        top: -70px;
+        right: -35px;
+        border: 25px solid rgba(103, 232, 249, 0.13);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .dashboard-header h1 {
+        position: relative;
+        z-index: 1;
+        margin: 0 0 10px;
+        color: #ffffff;
+        font-size: clamp(25px, 4vw, 32px);
+    }
+
+    .dashboard-header p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: #cffafe;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    /* Profile card */
+    .profile-card {
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        background: #ffffff;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+    }
+
+    .profile-card-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 24px 28px;
+        border-bottom: 1px solid #e2e8f0;
+        background: linear-gradient(
+            110deg,
+            #f0fdff,
+            #ffffff
+        );
+    }
+
+    .profile-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 58px;
+        height: 58px;
+        border-radius: 17px;
+        color: #ffffff;
+        background: linear-gradient(
+            135deg,
+            #0f172a,
+            #0891b2,
+            #22d3ee
+        );
+        font-size: 27px;
+        box-shadow: 0 6px 15px rgba(8, 145, 178, 0.2);
+    }
+
+    .profile-card-header h2 {
+        margin: 0 0 5px;
+        color: #0f172a;
+        font-size: 20px;
+    }
+
+    .profile-card-header p {
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .profile-details {
+        padding: 10px 28px;
+    }
+
+    .profile-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 19px 0;
+        border-bottom: 1px solid #edf2f7;
+    }
+
+    .profile-item:last-child {
+        border-bottom: none;
+    }
+
+    .profile-label {
+        color: #64748b;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .profile-value {
+        color: #0f172a;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    /* Status badges */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .verified {
+        border: 1px solid #a7f3d0;
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .not-verified {
+        border: 1px solid #fde68a;
+        background: #fffbeb;
+        color: #92400e;
+    }
+
+    .role-badge {
+        display: inline-block;
+        padding: 7px 12px;
+        border: 1px solid #a5f3fc;
+        border-radius: 8px;
+        background: #ecfeff;
+        color: #0e7490;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    /* Location section */
+    .location-section {
+        margin-top: 24px;
+        padding: 24px 28px;
+        border: 1px solid #bae6fd;
+        border-radius: 16px;
+        background: linear-gradient(
+            135deg,
+            #ecfeff,
+            #f0f9ff
+        );
+    }
+
+    .location-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .location-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        border-radius: 13px;
+        background: linear-gradient(
+            135deg,
+            #164e63,
+            #0891b2
+        );
+        color: #ffffff;
+        font-size: 22px;
+    }
+
+    .location-heading h3 {
+        margin: 0 0 5px;
+        color: #164e63;
+        font-size: 18px;
+    }
+
+    .location-heading p {
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .location-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .location-value {
+        min-width: 0;
+        padding: 16px;
+        border: 1px solid #dbeafe;
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.85);
+    }
+
+    .location-value span {
+        display: block;
+        margin-bottom: 8px;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .location-value strong {
+        color: #0f172a;
+        font-size: 15px;
+        overflow-wrap: anywhere;
+    }
+
+    .privacy-note {
+        margin-top: 20px;
+        padding: 14px 16px;
+        border-left: 4px solid #06b6d4;
+        border-radius: 7px;
+        background: #f8fafc;
+        color: #475569;
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+        .dashboard-header {
+            padding: 25px 21px;
+            border-radius: 16px;
+        }
+
+        .profile-card-header {
+            padding: 20px;
+        }
+
+        .profile-details {
+            padding: 8px 20px;
+        }
+
+        .profile-item {
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .profile-label {
+            flex: 0 0 42%;
+        }
+
+        .profile-value {
+            max-width: 58%;
+        }
+
+        .location-section {
+            padding: 20px;
+        }
+
+        .location-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+
+<div class="profile-page">
+
+    <!-- Page heading -->
+    <div class="dashboard-header">
+        <h1>👤 My Profile</h1>
+        <p>
+            View your account information, verification
+            status, and registered location.
+        </p>
+    </div>
+
+    <!-- Account information -->
+    <div class="profile-card">
+
+        <div class="profile-card-header">
+
+            <div class="profile-avatar">👤</div>
+
+            <div>
+                <h2>Account Information</h2>
+                <p>Your registered account details</p>
+            </div>
+
+        </div>
+
+        <div class="profile-details">
+
+            <div class="profile-item">
+                <span class="profile-label">Username</span>
+                <span class="profile-value">
+                    {{ user.username }}
+                </span>
+            </div>
+
+            <div class="profile-item">
+                <span class="profile-label">Email Address</span>
+                <span class="profile-value">
+                    {{ user.email|default:"Not provided" }}
+                </span>
+            </div>
+
+            <div class="profile-item">
+                <span class="profile-label">Account Role</span>
+                <span class="profile-value">
+                    <span class="role-badge">
+                        {{ user.role }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="profile-item">
+                <span class="profile-label">Email Verification</span>
+                <span class="profile-value">
+                    {% if user.email_verified %}
+                        <span class="status-badge verified">
+                            ✓ Verified
+                        </span>
+                    {% else %}
+                        <span class="status-badge not-verified">
+                            ! Not Verified
+                        </span>
+                    {% endif %}
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Registered location -->
+    {% if user.latitude and user.longitude %}
+
+        <div class="location-section">
+
+            <div class="location-heading">
+
+                <div class="location-icon">📍</div>
+
+                <div>
+                    <h3>Registered Location</h3>
+                    <p>Your saved geographic coordinates</p>
+                </div>
+
+            </div>
+
+            <div class="location-grid">
+
+                <div class="location-value">
+                    <span>LATITUDE</span>
+                    <strong>{{ user.latitude }}</strong>
+                </div>
+
+                <div class="location-value">
+                    <span>LONGITUDE</span>
+                    <strong>{{ user.longitude }}</strong>
+                </div>
+
+            </div>
+
+            <div class="privacy-note">
+                🔒 Your location is displayed as account
+                information. Keep your location details
+                private and share them only when necessary.
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="location-section">
+
+            <div class="location-heading">
+
+                <div class="location-icon">📍</div>
+
+                <div>
+                    <h3>Location Not Available</h3>
+                    <p>
+                        No saved coordinates are available
+                        for your account yet.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

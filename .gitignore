@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+myenv/
+venv/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Database backups
+*.sqlite3
+backup.json
+*.sql
+
+# Certificates
+certificates/
+
+# Django generated files
+staticfiles/
+media/
+
+# Editor files
+.vscode/
+.idea/
+# Sensitive test files and certificates
+test_tidb.py
+*.pem

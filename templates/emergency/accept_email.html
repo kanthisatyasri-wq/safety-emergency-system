@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accept Emergency | Safety & Emergency System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 30px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #164e63,
+                #0891b2
+            );
+        }
+
+        .emergency-container {
+            width: 100%;
+            max-width: 650px;
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .emergency-header {
+            padding: 35px 25px;
+            text-align: center;
+            color: #ffffff;
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #164e63,
+                #0891b2
+            );
+        }
+
+        .emergency-icon {
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            font-size: 38px;
+        }
+
+        .emergency-header h1 {
+            margin: 0 0 10px;
+            font-size: 28px;
+        }
+
+        .emergency-header p {
+            margin: 0;
+            color: #cffafe;
+            line-height: 1.6;
+        }
+
+        .emergency-content {
+            padding: 30px;
+        }
+
+        .message {
+            margin: 0 0 12px;
+            padding: 13px 15px;
+            border-radius: 10px;
+            color: #155e75;
+            background: #ecfeff;
+            border: 1px solid #a5f3fc;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .status-card {
+            padding: 25px;
+            text-align: center;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .status-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .status-card h2 {
+            margin: 0 0 12px;
+            color: #0f172a;
+            font-size: 23px;
+        }
+
+        .status-card p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .emergency-type {
+            margin: 20px 0;
+            padding: 16px;
+            text-align: left;
+            background: #ecfeff;
+            border: 1px solid #a5f3fc;
+            border-radius: 12px;
+        }
+
+        .emergency-type span {
+            display: block;
+            margin-bottom: 6px;
+            color: #155e75;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .emergency-type strong {
+            color: #0f172a;
+            font-size: 18px;
+            overflow-wrap: anywhere;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 11px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-accept {
+            color: #ffffff;
+            background: linear-gradient(135deg, #0891b2, #164e63);
+            box-shadow: 0 6px 16px rgba(8, 145, 178, 0.2);
+        }
+
+        .btn-map {
+            margin-top: 15px;
+            color: #ffffff;
+            background: #0f766e;
+        }
+
+        .btn:focus-visible {
+            outline: 3px solid #67e8f9;
+            outline-offset: 3px;
+        }
+
+        .status-resolved {
+            border-color: #cbd5e1;
+        }
+
+        .status-accepted {
+            border-color: #99f6e4;
+            background: #f0fdfa;
+        }
+
+        .status-accepted h2 {
+            color: #115e59;
+        }
+
+        .status-unavailable {
+            border-color: #fecaca;
+            background: #fff7f7;
+        }
+
+        .status-unavailable h2 {
+            color: #991b1b;
+        }
+
+        .safety-note {
+            margin-top: 22px;
+            padding: 13px;
+            color: #475569;
+            background: #f1f5f9;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 18px 12px;
+            }
+
+            .emergency-header {
+                padding: 28px 18px;
+            }
+
+            .emergency-header h1 {
+                font-size: 24px;
+            }
+
+            .emergency-content {
+                padding: 20px;
+            }
+
+            .status-card {
+                padding: 20px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="emergency-container">
+
+        <header class="emergency-header">
+            <div class="emergency-icon">🆘</div>
+
+            <h1>Emergency Assistance</h1>
+
+            <p>
+                Your response can make a difference.
+                Review the emergency status below.
+            </p>
+        </header>
+
+        <section class="emergency-content">
+
+            {% for message in messages %}
+                <p class="message" role="status">
+                    {{ message }}
+                </p>
+            {% endfor %}
+
+            {% if emergency.status != 'ACTIVE' %}
+
+                <div class="status-card status-resolved">
+                    <div class="status-icon">ℹ️</div>
+
+                    <h2>Emergency No Longer Active</h2>
+
+                    <p>
+                        This emergency has already been resolved.
+                        No further action is required.
+                    </p>
+                </div>
+
+            {% elif alert.status == 'ACCEPTED' and maps_link %}
+
+                <div class="status-card status-accepted">
+                    <div class="status-icon">✅</div>
+
+                    <h2>Thank You for Helping!</h2>
+
+                    <p>
+                        You have accepted this emergency.
+                        Open the location below to view where assistance
+                        is needed.
+                    </p>
+
+                    <a
+                        href="{{ maps_link }}"
+                        class="btn btn-map"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        📍 Open Emergency Location
+                    </a>
+                </div>
+
+            {% elif alert.status == 'SENT' %}
+
+                <div class="status-card">
+                    <div class="status-icon">🚨</div>
+
+                    <h2>Emergency Request</h2>
+
+                    <div class="emergency-type">
+                        <span>Emergency Type</span>
+                        <strong>{{ emergency.emergency_type }}</strong>
+                    </div>
+
+                    <p>
+                        Please confirm only if you are willing and able
+                        to assist with this emergency.
+                    </p>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-accept"
+                        >
+                            ✓ Confirm Accept Emergency
+                        </button>
+                    </form>
+                </div>
+
+            {% else %}
+
+                <div class="status-card status-unavailable">
+                    <div class="status-icon">⚠️</div>
+
+                    <h2>Emergency Unavailable</h2>
+
+                    <p>
+                        This emergency is no longer available for
+                        acceptance. It may have already been handled
+                        or its status may have changed.
+                    </p>
+                </div>
+
+            {% endif %}
+
+            <div class="safety-note">
+                🔒 For your safety, follow emergency procedures and
+                contact the appropriate emergency services when needed.
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

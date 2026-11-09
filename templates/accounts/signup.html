@@ -1,0 +1,580 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Safety & Emergency System - Signup</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 35px 15px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #164e63 50%,
+                #0891b2 100%
+            );
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            width: 520px;
+            max-width: 100%;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 22px;
+            box-shadow: 0 25px 60px rgba(2, 12, 27, 0.3);
+            animation: appear 0.55s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #0891b2,
+                #22d3ee
+            );
+            box-shadow: 0 8px 20px rgba(8, 145, 178, 0.25);
+            font-size: 36px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            text-align: center;
+            color: #0f172a;
+            font-size: 27px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            margin: 0 0 27px;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 28px 0 8px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #164e63;
+            font-size: 17px;
+        }
+
+        .section-description {
+            margin: 10px 0 15px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        label {
+            display: block;
+            margin: 17px 0 7px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 650;
+        }
+
+        .required {
+            color: #0891b2;
+        }
+
+        input:not([type="hidden"]) {
+            display: block;
+            width: 100%;
+            min-height: 46px;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #0f172a;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:not([type="hidden"]):focus {
+            outline: none;
+            border-color: #06b6d4;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.13);
+        }
+
+        input[readonly] {
+            background: #ecfeff;
+            border-color: #a5f3fc;
+            color: #155e75;
+            cursor: default;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        .info {
+            margin-top: 7px;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .error {
+            margin-top: 7px;
+            padding: 9px 12px;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            background: #fef2f2;
+            color: #b91c1c;
+            font-size: 13px;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            border: 1px solid #a5f3fc;
+            border-radius: 9px;
+            background: #ecfeff;
+            color: #155e75;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Location section */
+        .location-panel {
+            margin-top: 15px;
+            padding: 18px;
+            border: 1px solid #bae6fd;
+            border-radius: 14px;
+            background: linear-gradient(
+                135deg,
+                #ecfeff,
+                #f0f9ff
+            );
+        }
+
+        .location-button {
+            width: 100%;
+            min-height: 48px;
+            margin-top: 8px;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(
+                120deg,
+                #0f172a,
+                #164e63,
+                #0891b2
+            );
+            background-size: 200% auto;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-position 0.3s, transform 0.2s;
+        }
+
+        .location-button:hover {
+            background-position: right center;
+            transform: translateY(-1px);
+        }
+
+        .location-button:disabled {
+            opacity: 0.75;
+            cursor: wait;
+            transform: none;
+        }
+
+        #location-status {
+            margin: 12px 0 0;
+            padding: 11px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        #location-status.success {
+            border-color: #a7f3d0;
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        #location-status.error-status {
+            border-color: #fecaca;
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        #location-status.loading {
+            border-color: #bae6fd;
+            background: #f0f9ff;
+            color: #075985;
+        }
+
+        /* Create account button */
+        .submit-button {
+            width: 100%;
+            min-height: 50px;
+            margin-top: 28px;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(
+                120deg,
+                #0f172a,
+                #164e63,
+                #0891b2
+            );
+            background-size: 200% auto;
+            color: white;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 750;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(8, 145, 178, 0.2);
+            transition: background-position 0.3s, transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .submit-button:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 23px rgba(8, 145, 178, 0.28);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 18px 12px;
+            }
+
+            .container {
+                padding: 25px 20px;
+                border-radius: 17px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .location-panel {
+                padding: 13px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">🛡️</div>
+
+    <h1>Safety System</h1>
+
+    <p class="subtitle">
+        Create your account and take the first step
+        towards a safer tomorrow.
+    </p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" id="signup-form">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <label for="{{ form.username.id_for_label }}">
+            Username <span class="required">*</span>
+        </label>
+
+        {{ form.username }}
+
+        {% if form.username.errors %}
+            <div class="error">
+                {{ form.username.errors }}
+            </div>
+        {% endif %}
+
+        <!-- Email -->
+        <label for="{{ form.email.id_for_label }}">
+            Email Address <span class="required">*</span>
+        </label>
+
+        {{ form.email }}
+
+        {% if form.email.errors %}
+            <div class="error">
+                {{ form.email.errors }}
+            </div>
+        {% endif %}
+
+        <!-- Password -->
+        <label for="{{ form.password.id_for_label }}">
+            Password <span class="required">*</span>
+        </label>
+
+        {{ form.password }}
+
+        {% if form.password.errors %}
+            <div class="error">
+                {{ form.password.errors }}
+            </div>
+        {% endif %}
+
+        <!-- Aadhaar -->
+        <label for="{{ form.aadhaar_number.id_for_label }}">
+            Aadhaar Number <span class="required">*</span>
+        </label>
+
+        {{ form.aadhaar_number }}
+
+        <p class="info">
+            Enter your 12-digit Aadhaar number.
+        </p>
+
+        {% if form.aadhaar_number.errors %}
+            <div class="error">
+                {{ form.aadhaar_number.errors }}
+            </div>
+        {% endif %}
+
+        <!-- Location -->
+        <h3>📍 Current Location</h3>
+
+        <p class="section-description">
+            Your current location is used to support
+            the emergency response system.
+        </p>
+
+        <div class="location-panel">
+
+            <button
+                type="button"
+                class="location-button"
+                onclick="getLocation()">
+
+                📍 Use My Current Location
+
+            </button>
+
+            <p id="location-status" aria-live="polite">
+                Location not detected.
+                Click the button above.
+            </p>
+
+            <input
+                type="hidden"
+                name="latitude"
+                id="latitude">
+
+            <input
+                type="hidden"
+                name="longitude"
+                id="longitude">
+
+            <input
+                type="hidden"
+                name="location_type"
+                id="location_type">
+
+            <label for="location_address">
+                Detected Location
+                <span class="required">*</span>
+            </label>
+
+            <input
+                type="text"
+                name="location_address"
+                id="location_address"
+                placeholder="Use the button above to detect location"
+                readonly
+                required>
+
+        </div>
+
+        <button type="submit" class="submit-button">
+            Create Account →
+        </button>
+
+    </form>
+
+    <div class="footer-note">
+        YOUR SAFETY • YOUR SECURITY • YOUR PEACE OF MIND
+    </div>
+
+</div>
+
+<script>
+    function getLocation() {
+        const status = document.getElementById("location-status");
+        const address = document.getElementById("location_address");
+        const latitude = document.getElementById("latitude");
+        const longitude = document.getElementById("longitude");
+        const locationType = document.getElementById("location_type");
+        const button = document.querySelector(".location-button");
+
+        if (!navigator.geolocation) {
+            status.textContent =
+                "Your browser does not support location services.";
+            status.className = "error-status";
+            return;
+        }
+
+        // Clear old coordinates before requesting a fresh location.
+        latitude.value = "";
+        longitude.value = "";
+        locationType.value = "";
+        address.value = "";
+
+        status.textContent = "Detecting your current location...";
+        status.className = "loading";
+
+        button.disabled = true;
+        button.textContent = "Detecting Location...";
+
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                latitude.value = lat;
+                longitude.value = lon;
+                locationType.value = "CURRENT";
+
+                address.value =
+                    "Latitude: " + lat.toFixed(6) +
+                    ", Longitude: " + lon.toFixed(6);
+
+                status.textContent =
+                    "Current location detected successfully.";
+                status.className = "success";
+
+                button.textContent = "✓ Location Detected";
+                button.disabled = false;
+            },
+
+            function(error) {
+                latitude.value = "";
+                longitude.value = "";
+                locationType.value = "";
+                address.value = "";
+
+                if (error.code === 1) {
+                    status.textContent =
+                        "Location permission denied. Please allow location access.";
+                } else if (error.code === 2) {
+                    status.textContent =
+                        "Unable to detect your location. Please try again.";
+                } else if (error.code === 3) {
+                    status.textContent =
+                        "Location request timed out. Please try again.";
+                } else {
+                    status.textContent =
+                        "Unable to detect location. Please try again.";
+                }
+
+                status.className = "error-status";
+                button.textContent = "📍 Use My Current Location";
+                button.disabled = false;
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    }
+
+    document.getElementById("signup-form")
+        .addEventListener("submit", function(event) {
+            const latitude = document.getElementById("latitude").value;
+            const longitude = document.getElementById("longitude").value;
+
+            if (latitude === "" || longitude === "") {
+                event.preventDefault();
+
+                const status =
+                    document.getElementById("location-status");
+
+                status.textContent =
+                    "Please detect your current location before creating your account.";
+                status.className = "error-status";
+
+                status.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+        });
+</script>
+
+</body>
+</html>

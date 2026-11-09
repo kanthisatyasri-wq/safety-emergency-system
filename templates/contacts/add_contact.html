@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Emergency Contact
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .contact-page {
+        max-width: 850px;
+        margin: 35px auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Header */
+    .dashboard-header {
+        background: linear-gradient(135deg, #0f172a, #164e63, #0891b2);
+        color: white;
+        padding: 35px 30px;
+        border-radius: 20px;
+        margin-bottom: 28px;
+        box-shadow: 0 10px 25px rgba(8, 145, 178, 0.18);
+    }
+
+    .dashboard-header h1 {
+        margin: 0 0 12px;
+        font-size: 29px;
+    }
+
+    .dashboard-header p {
+        margin: 0;
+        color: #e0f2fe;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    /* Form Card */
+    .contact-card {
+        background: #ffffff;
+        padding: 32px;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+    }
+
+    .form-intro {
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0 0 25px;
+    }
+
+    .form-field {
+        margin-bottom: 22px;
+    }
+
+    .form-field label {
+        display: block;
+        margin-bottom: 9px;
+        color: #0f172a;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+        display: block;
+        width: 100%;
+        padding: 13px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        background: #f8fafc;
+        color: #0f172a;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+        border-color: #0891b2;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.12);
+    }
+
+    .form-field ul.errorlist,
+    ul.errorlist {
+        margin: 8px 0 0;
+        padding-left: 20px;
+        color: #b91c1c;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .non-field-errors {
+        color: #b91c1c;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        padding: 12px 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    /* Buttons */
+    .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    .hero-button,
+    .card-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px 20px;
+        border: none;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hero-button {
+        background: linear-gradient(135deg, #0891b2, #164e63);
+    }
+
+    .card-button {
+        background: #e2e8f0;
+        color: #334155;
+    }
+
+    .hero-button:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(8, 145, 178, 0.22);
+    }
+
+    .card-button:hover {
+        color: #0f172a;
+        background: #cbd5e1;
+        transform: translateY(-2px);
+    }
+
+    .security-note {
+        margin-top: 22px;
+        padding: 14px;
+        background: #ecfeff;
+        border: 1px solid #a5f3fc;
+        border-radius: 10px;
+        color: #155e75;
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+        .contact-page {
+            margin: 15px auto;
+            padding: 14px;
+        }
+
+        .dashboard-header {
+            padding: 27px 22px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 24px;
+        }
+
+        .contact-card {
+            padding: 22px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .hero-button,
+        .card-button {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="contact-page">
+
+    <div class="dashboard-header">
+        <h1>📞 Add Emergency Contact</h1>
+
+        <p>
+            Add a trusted person who can be contacted during an emergency.
+            Verify their details so your emergency contact list stays reliable.
+        </p>
+    </div>
+
+    <div class="contact-card">
+
+        <p class="form-intro">
+            Enter the contact's details carefully. The verification OTP
+            will be handled by your existing Django backend.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="non-field-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-field">
+                <label for="{{ form.contact_type.id_for_label }}">
+                    Contact Type
+                </label>
+
+                {{ form.contact_type }}
+                {{ form.contact_type.errors }}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.name.id_for_label }}">
+                    Full Name
+                </label>
+
+                {{ form.name }}
+                {{ form.name.errors }}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.email.id_for_label }}">
+                    Email Address
+                </label>
+
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.phone.id_for_label }}">
+                    Phone Number
+                </label>
+
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="hero-button">
+                    📧 Send Verification OTP
+                </button>
+
+                <a href="{% url 'contacts_list' %}" class="card-button">
+                    ← Cancel
+                </a>
+            </div>
+        </form>
+
+        <div class="security-note">
+            🔒 <strong>Safety tip:</strong>
+            Add someone you trust and make sure their contact details are correct.
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

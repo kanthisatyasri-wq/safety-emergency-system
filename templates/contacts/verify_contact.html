@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}
+Verify Emergency Contact
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .verify-page {
+        max-width: 650px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .verify-header {
+        background: linear-gradient(135deg, #0f172a, #164e63, #0891b2);
+        color: white;
+        padding: 32px 28px;
+        border-radius: 18px 18px 0 0;
+        text-align: center;
+        box-shadow: 0 8px 22px rgba(8, 145, 178, 0.15);
+    }
+
+    .verify-icon {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        font-size: 35px;
+    }
+
+    .verify-header h1 {
+        margin: 0 0 14px;
+        font-size: 27px;
+    }
+
+    .verify-header p {
+        margin: 0 0 8px;
+        color: #e0f2fe;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .email-address {
+        display: inline-block;
+        color: #ffffff;
+        font-size: 15px;
+        overflow-wrap: anywhere;
+    }
+
+    .verify-card {
+        background: #ffffff;
+        padding: 32px;
+        border: 1px solid #e2e8f0;
+        border-top: none;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+    }
+
+    .instructions {
+        color: #64748b;
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.7;
+        margin: 0 0 25px;
+    }
+
+    .form-label {
+        display: block;
+        color: #0f172a;
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .otp-input {
+        display: block;
+        width: 100%;
+        padding: 16px 12px;
+        border: 2px solid #cbd5e1;
+        border-radius: 12px;
+        background: #f8fafc;
+        color: #0f172a;
+        outline: none;
+        text-align: center;
+        font-size: 25px;
+        font-weight: 700;
+        letter-spacing: 9px;
+        margin-bottom: 22px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .otp-input:focus {
+        border-color: #0891b2;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.12);
+    }
+
+    .verify-button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 11px;
+        background: linear-gradient(135deg, #0891b2, #164e63);
+        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .verify-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(8, 145, 178, 0.22);
+    }
+
+    .verify-button:focus-visible {
+        outline: 3px solid #67e8f9;
+        outline-offset: 3px;
+    }
+
+    .security-note {
+        margin-top: 22px;
+        padding: 13px;
+        border-radius: 10px;
+        background: #ecfeff;
+        border: 1px solid #a5f3fc;
+        color: #155e75;
+        font-size: 13px;
+        line-height: 1.7;
+        text-align: center;
+    }
+
+    @media (max-width: 500px) {
+        .verify-page {
+            margin: 18px auto;
+            padding: 14px;
+        }
+
+        .verify-header {
+            padding: 27px 20px;
+        }
+
+        .verify-header h1 {
+            font-size: 23px;
+        }
+
+        .verify-card {
+            padding: 24px 20px;
+        }
+
+        .otp-input {
+            letter-spacing: 6px;
+        }
+    }
+</style>
+
+<div class="verify-page">
+
+    <div class="verify-header">
+        <div class="verify-icon">📧</div>
+
+        <h1>Verify Emergency Contact</h1>
+
+        <p>
+            A 6-digit verification OTP has been sent to:
+        </p>
+
+        <strong class="email-address">
+            {{ contact.email }}
+        </strong>
+    </div>
+
+    <div class="verify-card">
+
+        <p class="instructions">
+            Enter the verification code sent to this email address
+            to confirm your emergency contact.
+        </p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p
+                    class="message"
+                    role="status"
+                    style="padding: 12px; border-radius: 9px;
+                           background: #ecfeff; color: #155e75;
+                           border: 1px solid #a5f3fc;
+                           font-size: 14px; line-height: 1.6;"
+                >
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label class="form-label" for="otp">
+                Enter 6-Digit OTP
+            </label>
+
+            <input
+                class="otp-input"
+                id="otp"
+                type="text"
+                name="otp"
+                maxlength="6"
+                minlength="6"
+                pattern="[0-9]{6}"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                placeholder="000000"
+                title="Please enter exactly 6 digits"
+                aria-label="Enter your 6-digit verification code"
+                required
+            >
+
+            <button type="submit" class="verify-button">
+                ✓ Verify Contact
+            </button>
+        </form>
+
+        <div class="security-note">
+            🔒 Keep your OTP private. Never share your verification
+            code with anyone.
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

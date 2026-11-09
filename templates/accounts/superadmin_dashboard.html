@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}
+Superadmin Dashboard
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 35px auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Header */
+    .dashboard-header {
+        background: linear-gradient(135deg, #0f172a, #164e63, #0891b2);
+        color: white;
+        padding: 38px 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 25px rgba(8, 145, 178, 0.2);
+    }
+
+    .dashboard-label {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        color: #cffafe;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .dashboard-header h1 {
+        font-size: 30px;
+        margin: 0 0 12px;
+        font-weight: 700;
+    }
+
+    .dashboard-header p {
+        color: #e0f2fe;
+        font-size: 16px;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    /* Dashboard Cards */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+        transition: transform 0.25s ease,
+                    box-shadow 0.25s ease,
+                    border-color 0.25s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        border-color: #67e8f9;
+        box-shadow: 0 12px 28px rgba(8, 145, 178, 0.13);
+    }
+
+    .card-icon {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: #ecfeff;
+        font-size: 26px;
+        margin-bottom: 18px;
+    }
+
+    .card h3 {
+        color: #0f172a;
+        font-size: 21px;
+        margin: 0 0 13px;
+    }
+
+    .card p {
+        color: #475569;
+        font-size: 15px;
+        line-height: 1.8;
+        margin: 0;
+    }
+
+    .card-tag {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 6px 11px;
+        background: #f1f5f9;
+        color: #475569;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    /* Responsive Layout */
+    @media (max-width: 700px) {
+        .dashboard-container {
+            margin: 15px auto;
+            padding: 14px;
+        }
+
+        .dashboard-header {
+            padding: 28px 22px;
+            border-radius: 15px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 25px;
+        }
+
+        .cards {
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        .card {
+            padding: 23px;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+        <span class="dashboard-label">Safety & Emergency System</span>
+
+        <h1>🛡️ Superadmin Dashboard</h1>
+
+        <p>
+            Welcome, {{ user.username }}.
+            You have Superadmin access to oversee the system.
+        </p>
+    </div>
+
+    <div class="cards">
+
+        <!-- User Management -->
+        <div class="card">
+            <div class="card-icon">👥</div>
+
+            <h3>User Management</h3>
+
+            <p>
+                Manage users registered in the
+                Safety & Emergency System.
+            </p>
+
+            <span class="card-tag">User Administration</span>
+        </div>
+
+        <!-- Admin Management -->
+        <div class="card">
+            <div class="card-icon">🛡️</div>
+
+            <h3>Admin Management</h3>
+
+            <p>
+                Manage administrator accounts
+                and oversee system access.
+            </p>
+
+            <span class="card-tag">Access Control</span>
+        </div>
+
+        <!-- Incident Management -->
+        <div class="card">
+            <div class="card-icon">🚨</div>
+
+            <h3>Incident Management</h3>
+
+            <p>
+                Monitor emergency and accident
+                incidents across the system.
+            </p>
+
+            <span class="card-tag">Emergency Monitoring</span>
+        </div>
+
+        <!-- System Overview -->
+        <div class="card">
+            <div class="card-icon">📊</div>
+
+            <h3>System Overview</h3>
+
+            <p>
+                Overall system monitoring and
+                administration features can be added here later.
+            </p>
+
+            <span class="card-tag">System Analytics</span>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
